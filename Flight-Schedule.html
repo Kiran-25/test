@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <title> Flight Schedule</title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script  src="https://code.jquery.com/jquery-3.2.1.min.js"  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <style>
+  #result {
+   position: absolute;
+   width: 100%;
+   max-width:870px;
+   cursor: pointer;
+   overflow-y: auto;
+   max-height: 400px;
+   box-sizing: border-box;
+   z-index: 1001;
+  }
+  .link-class:hover{
+   background-color:#f1f1f1;
+  }
+  </style>
+ </head>
+ <body>
+  <br /><br />
+  <div class="container" style="width:900px;">
+   
+   <h3 align="center">Name Data</h3>   
+   <br /><br />
+   <div align="center">
+    <input type="text" name="text" id="search" placeholder="Search Employee Details" class="form-control" />
+   </div>
+   <ul class="list-group" id="result"></ul>
+   <br />
+  </div>
+ </body>
+</html>
+
+<script>
+    $(document).ready(function () {
+      var Search_box=$('#search').val(); 
+        $.getJSON('data.json', function(data) {
+        flight_details = data['flight_details'];      
+
+        $('#search').keyup(function () {
+
+          $('#result').empty();
+             
+            $('#state').val('');
+            var searchField = $('#search').val();
+            $.each(flight_details, function(id, destination) {       
+              var name=destination["name"];
+              var location=destination["location"];
+              var expression = new RegExp(searchField, "i");
+              if (destination.name.search(expression) != -1 || destination.location.search(expression) != -1) {
+                          $('#result').append('<li class="list-group-item link-class"> ' + destination.name + ' | <span class="text-muted">' + destination.location + '</span></li>');
+              } 
+          })
+           
+        });
+
+    });
+         
+    });
+</script>
